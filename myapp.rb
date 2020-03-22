@@ -13,11 +13,13 @@ end
 
 client = Slack::Web::Client.new
 
-client.auth_test
-all_members = client.users_list
-all_members['members'].each do |member|
-  if member.is_bot != true
-    client.chat_postMessage(channel: member.id, text: 'Habla causita',
-                            as_user: true)
+get '/' do
+  'Hello World!'
+  all_members = client.users_list
+  all_members['members'].each do |member|
+    if member.is_bot != true
+      client.chat_postMessage(channel: member.id, text: 'Habla causita',
+                              as_user: true)
+      end
   end
 end
