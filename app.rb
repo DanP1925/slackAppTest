@@ -54,7 +54,7 @@ get '/' do
 end
 
 post '/' do
-  puts JSON.parse request.body.read
+  puts request.body.read
   status 200
   body ''
 end
