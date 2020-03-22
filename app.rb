@@ -13,6 +13,51 @@ end
 
 client = Slack::Web::Client.new
 
+def make_block_question(member)
+  [
+    {
+      "type": 'section',
+      "text": {
+        "type": 'mrkdwn',
+        "text": "Hi #{member.real_name} :wave:"
+      }
+    },
+    {
+      "type": 'section',
+      "text": {
+        "type": 'mrkdwn',
+        "text": 'Para marcar la hora de entrada apriete el boton. '
+      },
+      "accessory": {
+        "type": 'button',
+        "text": {
+          "type": 'plain_text',
+          "text": 'Marcar'
+        },
+        "value": member.id.to_s
+      }
+    }
+  ]
+end
+
 get '/' do
-  client.auth_test
+  all_members = client.users_list
+  all_members.members.each do |member|
+    next unless member.is_bot != true
+
+    block_question = make_block_question(member)
+    client.chat_postMessage(channel: member.id, text: 'Buenos dias',
+                            as_user: true, blocks: block_question.to_json)
+  end
+  status 200
+  body ''
+end
+
+post '/' do
+  request_data = JSON.parse(request.body.read)
+  member_id = request_data.actions.value
+  client.chat_postMessage(channel: member_id, text: 'Marcaste a la hora',
+                          as_user: true)
+  status 200
+  body 'Are u okay?'
 end
