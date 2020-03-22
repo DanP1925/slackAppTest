@@ -55,9 +55,6 @@ end
 
 post '/' do
   request_data = JSON.parse(request.body.read)
-  member_id = request_data.actions.value
-  client.chat_postMessage(channel: member_id, text: 'Marcaste a la hora',
-                          as_user: true)
   status 200
-  body 'Are u okay?'
+  body ''
 end
