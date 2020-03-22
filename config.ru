@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 # config.ru
-require './myapp'
+require './app'
 run Sinatra::Application
